@@ -12,6 +12,7 @@ const UserSchema = new Schema({
         address: String,
     },
     orders: [{
+        order_id: String,
         ordered_date: Date
     }],
 });
