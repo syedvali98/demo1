@@ -8,9 +8,12 @@ const ProductsSchema = new Schema({
    price : Number,
    store_id : String,
    quantity : Number,
-   units : String,
+   units : String, 
    image : String,
-   category : String   
+   category : String ,
+   description : String,
+   category_image : String ,
+   seller_email : String, 
 });
 
 export const Products = mongoose.model('Product', ProductsSchema, 'products');

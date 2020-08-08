@@ -84,6 +84,7 @@ export const updateOrder = functions.https.onRequest(async (request, response) =
     .then(
         (a)=>{
             response.send('order status updated');
+            return;
         }
     ).catch(
         (err)=>{
