@@ -12,6 +12,7 @@ const OrdersSchema = new Schema({
             _id: false,
             product_id: String,
             product_name: String,
+            product_image : String,
             product_quantity: String
         }
     ]

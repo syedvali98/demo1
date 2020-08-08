@@ -7,6 +7,7 @@ const StoresSchema = new Schema({
    _id : String,
    owner_id : String,
    store_name : String,
+   store_image : String,
    store_address : String
 });
 
