@@ -42,7 +42,11 @@ export const getProducts = functions.https.onRequest(async (request, response) =
     response.send(productResponse);
 });
 
-
+export const getProductsByCategory = functions.https.onRequest(async (request,response) =>{
+    let category = request.body.category
+    const productResponse = await Products.find({'category': category})
+    response.send(productResponse);
+});
 //products functions end
 
 
