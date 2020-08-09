@@ -63,8 +63,16 @@ export const getAllStores = functions.https.onRequest(async (request, response) 
 
 //miscellaneous functions start
 export const getCategories = functions.https.onRequest(async (request, response) => {
-    const categoryResponse = await Products.distinct('category');
-    response.send(categoryResponse);
+    //const categoryResponse = await Products.aggregate( [ {"$group": { "_id": { category: "$category", category_image: "$category_image" } } } ]);
+    const categoryResponse = await Products.find({}).select({"category": 1,"category_image" :1,_id :0 });
+    let result = categoryResponse.reduce((unique, o:any) => {
+        if(!unique.some(obj => obj.category === o.category)) {
+          unique.push(o);
+        }
+        return unique;
+    },[]);
+    response.send(result);
+
 });
 
 
