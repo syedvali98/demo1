@@ -111,6 +111,7 @@ export const getOrdersByUser = functions.https.onRequest(async (request, respons
     response.send(OrderResponse);
 });
 
+
 export const getOrdersByStore = functions.https.onRequest(async (request, response) => {
     let store_id = request.body.store_id
     const OrderResponse = await Orders.find({'store_id': store_id});

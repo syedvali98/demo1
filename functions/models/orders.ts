@@ -7,6 +7,9 @@ const OrdersSchema = new Schema({
     user_id: String,
     store_id: String,
     status: String,
+    order_id : String,
+    order_date : Date,
+    arrival_date : Date,
     product: [
         {
             _id: false,
