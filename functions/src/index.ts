@@ -90,6 +90,12 @@ export const createOrder = functions.https.onRequest(async (request, response) =
     response.send(OrderResponse);
 });
 
+export const createOrderByOrderId = functions.https.onRequest(async (request, response) => {
+    let data = request.body.order_id;
+    const OrderResponse = await Orders.create(data);
+    response.send(OrderResponse);
+});
+
 export const updateOrder = functions.https.onRequest(async (request, response) => {
     let status = request.body.status;
     await Orders.findByIdAndUpdate(request.body.order_id, {'status':status})
