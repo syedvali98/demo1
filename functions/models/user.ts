@@ -10,11 +10,7 @@ const UserSchema = new Schema({
         email_id: String,
         mobile: String,        
         address: String,
-    },
-    orders: [{
-        order_id: String,
-        ordered_date: Date
-    }],
+    }
 });
 
 export const User = mongoose.model('User', UserSchema, 'users');
