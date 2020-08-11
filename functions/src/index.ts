@@ -87,6 +87,7 @@ export const getCategories = functions.https.onRequest(async (request, response)
 export const createOrder = functions.https.onRequest(async (request, response) => {
     let data = request.body;
     data.order_date = Date.now();
+    data.status.ordered = Date.now();
     await Orders.create(data).then(
         (a)=>{
             
