@@ -86,12 +86,7 @@ export const getCategories = functions.https.onRequest(async (request, response)
 //orders functions start
 export const createOrder = functions.https.onRequest(async (request, response) => {
     let data = request.body;
-    const OrderResponse = await Orders.create(data);
-    response.send(OrderResponse);
-});
-
-export const createOrderByOrderId = functions.https.onRequest(async (request, response) => {
-    let data = request.body.order_id;
+    data.order_date = Date.now();
     const OrderResponse = await Orders.create(data);
     response.send(OrderResponse);
 });
