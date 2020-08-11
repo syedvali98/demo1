@@ -42,9 +42,9 @@ export const getProducts = functions.https.onRequest(async (request, response) =
     response.send(productResponse);
 });
 
-export const getProductsByCategory = functions.https.onRequest(async (request,response) =>{
+export const getProductsByCategory = functions.https.onRequest(async (request, response) => {
     let category = request.body.category
-    const productResponse = await Products.find({'category': category})
+    const productResponse = await Products.find({ 'category': category })
     response.send(productResponse);
 });
 //products functions end
@@ -68,13 +68,13 @@ export const getAllStores = functions.https.onRequest(async (request, response) 
 //miscellaneous functions start
 export const getCategories = functions.https.onRequest(async (request, response) => {
     //const categoryResponse = await Products.aggregate( [ {"$group": { "_id": { category: "$category", category_image: "$category_image" } } } ]);
-    const categoryResponse = await Products.find({}).select({"category": 1,"category_image" :1,_id :0 });
-    let result = categoryResponse.reduce((unique, o:any) => {
-        if(!unique.some(obj => obj.category === o.category)) {
-          unique.push(o);
+    const categoryResponse = await Products.find({}).select({ "category": 1, "category_image": 1, _id: 0 });
+    let result = categoryResponse.reduce((unique, o: any) => {
+        if (!unique.some(obj => obj.category === o.category)) {
+            unique.push(o);
         }
         return unique;
-    },[]);
+    }, []);
     response.send(result);
 
 });
@@ -87,50 +87,52 @@ export const getCategories = functions.https.onRequest(async (request, response)
 export const createOrder = functions.https.onRequest(async (request, response) => {
     let data = request.body;
     data.order_date = Date.now();
-    data.status.ordered = Date.now();
+    data.status = [{
+        ordered: Date.now()
+    }]
     await Orders.create(data).then(
-        (a)=>{
-            
+        (a) => {
             response.send(a);
         }
     ).catch(
-        (err)=>{
+        (err) => {
             response.send(err)
         }
     )
 });
 
 export const updateOrder = functions.https.onRequest(async (request, response) => {
-    let status = request.body.status;
-    await Orders.findByIdAndUpdate(request.body.order_id, {'status':status})
-    .then(
-        (a)=>{
-            response.send('order status updated');
-            return;
-        }
-    ).catch(
-        (err)=>{
-            response.send(err)
-        }
-    )
+    const data = request.body.update;
+    await Orders.findByIdAndUpdate(request.body.order_id, { $push: {status: data}},{new: true} )
+        .then(
+            (a) => {
+                console.log(request.body.update)
+                response.send(a);
+                return;
+            }
+        ).catch(
+            (err) => {
+                response.send(err);
+            }
+        )
 });
 
 export const getOrdersByUser = functions.https.onRequest(async (request, response) => {
     let user_id = request.body.user_id
-    const OrderResponse = await Orders.find({'user_id':user_id});
+    const OrderResponse = await Orders.find({ 'user_id': user_id });
     response.send(OrderResponse);
 });
 
 export const getOrdersByOrderId = functions.https.onRequest(async (request, response) => {
     let order_id = request.body.order_id
-    const OrderResponse = await Orders.find({'order_id':order_id});
+    const OrderResponse = await Orders.find({ 'order_id': order_id });
     response.send(OrderResponse);
 });
 
 
 export const getOrdersByStore = functions.https.onRequest(async (request, response) => {
     let store_id = request.body.store_id
-    const OrderResponse = await Orders.find({'store_id': store_id});
+    const OrderResponse = await Orders.find({ 'store_id': store_id });
     response.send(OrderResponse);
 });
 

@@ -6,11 +6,14 @@ const mongoose = DbConfig.getMongoose();
 const OrdersSchema = new Schema({
     user_id: String,
     store_id: String,
-    status:{
-        ordered: Date,
-        dispatched: Date,
-        delivered: Date
-    },
+    status:[
+        {
+            _id: false,
+            ordered: Date,
+            dispatched: Date,
+            delivered: Date
+        }
+    ],
     order_id: String,
     order_price: String,
     order_date: Date,
