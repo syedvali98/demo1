@@ -87,9 +87,9 @@ export const getCategories = functions.https.onRequest(async (request, response)
 export const createOrder = functions.https.onRequest(async (request, response) => {
     let data = request.body;
     data.order_date = Date.now();
-    data.status = [{
+    data.status = {
         ordered: Date.now()
-    }]
+    }
     await Orders.create(data).then(
         (a) => {
             response.send(a);
@@ -102,11 +102,15 @@ export const createOrder = functions.https.onRequest(async (request, response) =
 });
 
 export const updateOrder = functions.https.onRequest(async (request, response) => {
-    const data = request.body.update;
-    await Orders.findByIdAndUpdate(request.body.order_id, { $push: {status: data}},{new: true} )
+    // const update_data = {
+    //     [request.body.status_name]: request.body.status_value
+    // }
+    const status_name = 'status.'+request.body.status_name;
+    // await Orders.findByIdAndUpdate(request.body.order_id, { $push: {status: data}},{new: true} )
+    await Orders.findByIdAndUpdate(request.body.order_id, { $set: {[status_name]: request.body.status_value} }, { new: true })
         .then(
             (a) => {
-                console.log(request.body.update)
+                console.log({[request.body.status_name]: request.body.status_value})
                 response.send(a);
                 return;
             }
